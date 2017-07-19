@@ -1,0 +1,48 @@
+﻿
+2017-04-15 by v_zjliu
+
+
+服务器 ： 10.12.72.200 docker环境
+
+一、编译打包
+    1.build 前端 ；npm run build
+
+    2.build 后台；gox -osarch="linux/amd64"
+
+    3.配置nginx配置文件；nginx.conf
+
+二、检查前台配置文件：
+    1.重定向的域名改为 ： dev.bc.oa.com
+
+三、检查后台配置文件
+    1.服务器监听ip不能设置为127.0.0.1，改为0.0.0.0
+    2.设置IsDev 为 false
+    3.确认数据库连接是否正确：用户名，密码，ip,端口，数据库名称
+    4.确认redis配置是否正确：ip,端口,db，密码
+    5.确认静态资源文件路径是否正确
+
+
+四、上传文件到服务器；/data/solution/bc/
+
+    **注意，后台需要先停掉docker容器才能替换执行文件
+
+五、启动容器
+    docker命令：
+    
+    1、后台：
+    docker run --rm --name bc-host-oa -it -v /data/solution/bc/oa/host:/go -w /go -p 18006:2017 docker.oa.com/g_bbingguo/golang sh -c 'chmod 777 bc.oa_linux_amd64 && ./bc.oa_linux_amd64 '
+
+    2、前端：
+    docker run --rm --name bc-web-oa -it -v /data/solution/bc/oa/web:/usr/share/nginx/html -w /usr/share/nginx/html -p 18005:80 docker.oa.com/g_bbingguo/nginx:1.11 /bin/bash
+
+    #进入容器
+    docker attach bc-web-oa
+
+    #替换nginx配置文件
+    cp ./default.conf /etc/nginx/conf.d/default.conf
+
+    #启动nginx
+    nginx
+
+    #强制退出容器
+    Ctrl + P + Q

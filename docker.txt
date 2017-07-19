@@ -1,0 +1,44 @@
+优点(应用隔离和资源独立)
+
+1.Docker 容器的启动可以在秒级实现，这相比传统的虚拟机方式要快得多
+2.Docker 对系统资源的利用率很高，一台主机可以同时运行数千个Docker容器
+3.更快速的交付和部署，更轻松的迁移和扩展
+
+docker run --rm -it  -p 18819:80 --name nodejs -v /data/solution/nodejs:/data  -w /data 5829e9c3506d node index.js
+
+docker run --rm -itd  -p 3000:3000 --name ruzhiHost -v /data/solution/ruzhi/host:/data  -w /data 5829e9c3506d  npm start
+
+/data/solution/nodejs
+
+--rm 停止后删除
+-p端口映射
+--name 容器名称
+-v 目录映射
+-w 工作目录
+
+5829e9c3506d  使用的镜像
+npm start 运行命令
+
+docker run -itd -p 9090:80 --name ruzhiWeb -v /data/solution/ruzhi/web:/usr/share/nginx/html 40221d3c1009 /bin/bash
+nginx 配置网站
+
+
+ps -ef | grep nginx 查看nginx进程
+ 
+rm a.txt 删除文件
+
+nginx -s reload nginx重启
+
+ctrl+d 退出容器且关闭, docker ps 查看无
+ctrl+p+q 退出容器但不关闭, docker ps 查看有
+
+docker rm abc 删除一个容器
+docker stop abc 停止一个容器
+docker start abc 启动一个容器
+docker attach abc 进入一个容器
+docker exec abc nginx 进入一个容器并且启动
+
+cp ./usr/share/nginx/html/default.conf ./etc/nginx/conf.d/default.conf 复制文件a到b
+
+
+docker images
